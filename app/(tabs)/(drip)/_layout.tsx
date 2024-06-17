@@ -5,11 +5,12 @@ export default function DripLayout() {
     <Stack
       screenOptions={{
         headerStyle: {
-          backgroundColor: "#e83030",
+          backgroundColor: "#ff0000",
         },
         headerTintColor: "#fff",
         headerTitleStyle: {
           fontWeight: "bold",
+          color: "black",
         },
       }}
     >
@@ -17,6 +18,7 @@ export default function DripLayout() {
         name="index"
         options={{
           title: "드립",
+          headerShown: false,
         }}
       />
     </Stack>
