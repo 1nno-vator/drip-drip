@@ -27,6 +27,10 @@ import {
   Center,
   TooltipContent,
   VStack,
+  Button,
+  ButtonText,
+  ButtonIcon,
+  AddIcon,
   // Pressable,
 } from "@gluestack-ui/themed";
 import { useState } from "react";
@@ -34,34 +38,51 @@ import { Alert, Pressable } from "react-native";
 
 export default function DripScreen() {
   const [date, setDate] = useState<Date | undefined>(new Date());
+
+  const [inputMemo, setInputMemo] = useState<string>("");
   const [sliderValue, setSliderValue] = useState<number>(30);
 
   const handleSliderChange = (value: number) => {
     setSliderValue(value);
   };
 
+  const onPressSave = () => {
+    console.log(date);
+    console.log(inputMemo);
+    console.log(sliderValue);
+  };
+
+  const getIsSaveButtonDisabled = () => {
+    if (!inputMemo || inputMemo === "") return true;
+
+    return false;
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView
+        nestedScrollEnabled={false}
         alwaysBounceVertical={false}
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 80 }}
       >
-        <HStack space="md" justifyContent="space-between">
+        <HStack space="md" justifyContent="space-between" alignItems="center">
           <HStack>
             <Heading paddingVertical={"$3"}>나의 드립</Heading>
             <ModalDatePicker date={date} setDate={setDate} showTimePicker />
           </HStack>
 
-          <Pressable
-            onPress={() => Alert.alert("Temp Save")}
-            style={{ justifyContent: "center" }}
+          <Button
+            size="sm"
+            variant="link"
+            action={getIsSaveButtonDisabled() ? "secondary" : "primary"}
+            isDisabled={getIsSaveButtonDisabled()}
+            isFocusVisible={false}
+            bg="transparent"
+            onPress={onPressSave}
           >
-            {({ pressed }) => (
-              <>
-                <Text color={pressed ? "red" : "black"}>저장</Text>
-              </>
-            )}
-          </Pressable>
+            <ButtonText>저장</ButtonText>
+            <ButtonIcon as={AddIcon} />
+          </Button>
         </HStack>
 
         <Box w="$full" mt={"$5"} gap={"$8"}>
@@ -76,11 +97,16 @@ export default function DripScreen() {
                 justifyContent="center"
               >
                 <FormControlLabel>
-                  <FormControlLabelText>메모폼</FormControlLabelText>
+                  <FormControlLabelText>레시피 제목</FormControlLabelText>
                 </FormControlLabel>
               </FormControl>
               <Input size="md" flex={1}>
-                <InputField type="text" placeholder="메모" />
+                <InputField
+                  type="text"
+                  placeholder="메모"
+                  value={inputMemo}
+                  onChangeText={setInputMemo}
+                />
               </Input>
             </HStack>
           </Box>
@@ -95,7 +121,7 @@ export default function DripScreen() {
               justifyContent="center"
             >
               <FormControlLabel>
-                <FormControlLabelText>슬라이더</FormControlLabelText>
+                <FormControlLabelText>원두 굵기</FormControlLabelText>
               </FormControlLabel>
             </FormControl>
 
@@ -120,226 +146,6 @@ export default function DripScreen() {
               </Text>
             </VStack>
           </HStack>
-
-          <Box>
-            <HStack space="md">
-              <FormControl
-                size="md"
-                isDisabled={false}
-                isInvalid={false}
-                isReadOnly={false}
-                isRequired={true}
-                justifyContent="center"
-              >
-                <FormControlLabel>
-                  <FormControlLabelText>메모폼</FormControlLabelText>
-                </FormControlLabel>
-              </FormControl>
-              <Input size="md" flex={1}>
-                <InputField type="text" placeholder="메모" />
-              </Input>
-            </HStack>
-          </Box>
-
-          <Box>
-            <HStack space="md">
-              <FormControl
-                size="md"
-                isDisabled={false}
-                isInvalid={false}
-                isReadOnly={false}
-                isRequired={true}
-                justifyContent="center"
-              >
-                <FormControlLabel>
-                  <FormControlLabelText>메모폼</FormControlLabelText>
-                </FormControlLabel>
-              </FormControl>
-              <Input size="md" flex={1}>
-                <InputField type="text" placeholder="메모" />
-              </Input>
-            </HStack>
-          </Box>
-
-          <Box>
-            <HStack space="md">
-              <FormControl
-                size="md"
-                isDisabled={false}
-                isInvalid={false}
-                isReadOnly={false}
-                isRequired={true}
-                justifyContent="center"
-              >
-                <FormControlLabel>
-                  <FormControlLabelText>메모폼</FormControlLabelText>
-                </FormControlLabel>
-              </FormControl>
-              <Input size="md" flex={1}>
-                <InputField type="text" placeholder="메모" />
-              </Input>
-            </HStack>
-          </Box>
-
-          <Box>
-            <HStack space="md">
-              <FormControl
-                size="md"
-                isDisabled={false}
-                isInvalid={false}
-                isReadOnly={false}
-                isRequired={true}
-                justifyContent="center"
-              >
-                <FormControlLabel>
-                  <FormControlLabelText>메모폼</FormControlLabelText>
-                </FormControlLabel>
-              </FormControl>
-              <Input size="md" flex={1}>
-                <InputField type="text" placeholder="메모" />
-              </Input>
-            </HStack>
-          </Box>
-
-          <Box>
-            <HStack space="md">
-              <FormControl
-                size="md"
-                isDisabled={false}
-                isInvalid={false}
-                isReadOnly={false}
-                isRequired={true}
-                justifyContent="center"
-              >
-                <FormControlLabel>
-                  <FormControlLabelText>메모폼</FormControlLabelText>
-                </FormControlLabel>
-              </FormControl>
-              <Input size="md" flex={1}>
-                <InputField type="text" placeholder="메모" />
-              </Input>
-            </HStack>
-          </Box>
-
-          <Box>
-            <HStack space="md">
-              <FormControl
-                size="md"
-                isDisabled={false}
-                isInvalid={false}
-                isReadOnly={false}
-                isRequired={true}
-                justifyContent="center"
-              >
-                <FormControlLabel>
-                  <FormControlLabelText>메모폼</FormControlLabelText>
-                </FormControlLabel>
-              </FormControl>
-              <Input size="md" flex={1}>
-                <InputField type="text" placeholder="메모" />
-              </Input>
-            </HStack>
-          </Box>
-
-          <Box>
-            <HStack space="md">
-              <FormControl
-                size="md"
-                isDisabled={false}
-                isInvalid={false}
-                isReadOnly={false}
-                isRequired={true}
-                justifyContent="center"
-              >
-                <FormControlLabel>
-                  <FormControlLabelText>메모폼</FormControlLabelText>
-                </FormControlLabel>
-              </FormControl>
-              <Input size="md" flex={1}>
-                <InputField type="text" placeholder="메모" />
-              </Input>
-            </HStack>
-          </Box>
-
-          <Box>
-            <HStack space="md">
-              <FormControl
-                size="md"
-                isDisabled={false}
-                isInvalid={false}
-                isReadOnly={false}
-                isRequired={true}
-                justifyContent="center"
-              >
-                <FormControlLabel>
-                  <FormControlLabelText>메모폼</FormControlLabelText>
-                </FormControlLabel>
-              </FormControl>
-              <Input size="md" flex={1}>
-                <InputField type="text" placeholder="메모" />
-              </Input>
-            </HStack>
-          </Box>
-
-          <Box>
-            <HStack space="md">
-              <FormControl
-                size="md"
-                isDisabled={false}
-                isInvalid={false}
-                isReadOnly={false}
-                isRequired={true}
-                justifyContent="center"
-              >
-                <FormControlLabel>
-                  <FormControlLabelText>메모폼</FormControlLabelText>
-                </FormControlLabel>
-              </FormControl>
-              <Input size="md" flex={1}>
-                <InputField type="text" placeholder="메모" />
-              </Input>
-            </HStack>
-          </Box>
-
-          <Box>
-            <HStack space="md">
-              <FormControl
-                size="md"
-                isDisabled={false}
-                isInvalid={false}
-                isReadOnly={false}
-                isRequired={true}
-                justifyContent="center"
-              >
-                <FormControlLabel>
-                  <FormControlLabelText>메모폼</FormControlLabelText>
-                </FormControlLabel>
-              </FormControl>
-              <Input size="md" flex={1}>
-                <InputField type="text" placeholder="메모" />
-              </Input>
-            </HStack>
-          </Box>
-
-          <Box>
-            <HStack space="md">
-              <FormControl
-                size="md"
-                isDisabled={false}
-                isInvalid={false}
-                isReadOnly={false}
-                isRequired={true}
-                justifyContent="center"
-              >
-                <FormControlLabel>
-                  <FormControlLabelText>메모폼</FormControlLabelText>
-                </FormControlLabel>
-              </FormControl>
-              <Input size="md" flex={1}>
-                <InputField type="text" placeholder="메모" />
-              </Input>
-            </HStack>
-          </Box>
         </Box>
       </ScrollView>
     </SafeAreaView>
