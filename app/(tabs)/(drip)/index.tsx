@@ -1,4 +1,5 @@
 import ModalDatePicker from "@/components/date/ModalDatePicker";
+import InputSelector from "@/components/selector/InputSelector";
 import { convertSliderValue } from "@/utils/convert";
 import {
   SafeAreaView,
@@ -87,7 +88,7 @@ export default function DripScreen() {
 
         <Box w="$full" mt={"$5"} gap={"$8"}>
           <Box>
-            <HStack space="md">
+            <VStack space="md">
               <FormControl
                 size="md"
                 isDisabled={false}
@@ -97,21 +98,22 @@ export default function DripScreen() {
                 justifyContent="center"
               >
                 <FormControlLabel>
-                  <FormControlLabelText>레시피 제목</FormControlLabelText>
+                  <FormControlLabelText>원두 종류</FormControlLabelText>
                 </FormControlLabel>
               </FormControl>
-              <Input size="md" flex={1}>
+              {/* <Input size="md" flex={1}>
                 <InputField
                   type="text"
                   placeholder="메모"
                   value={inputMemo}
                   onChangeText={setInputMemo}
                 />
-              </Input>
-            </HStack>
+              </Input> */}
+              <InputSelector />
+            </VStack>
           </Box>
 
-          <HStack>
+          <VStack>
             <FormControl
               size="md"
               isDisabled={false}
@@ -125,7 +127,7 @@ export default function DripScreen() {
               </FormControlLabel>
             </FormControl>
 
-            <VStack style={{ flex: 1, gap: 12 }}>
+            <VStack style={{ marginTop: 4, flex: 1, gap: 12 }}>
               <Slider
                 step={10}
                 sliderTrackHeight={4}
@@ -141,11 +143,64 @@ export default function DripScreen() {
                 </SliderTrack>
                 <SliderThumb />
               </Slider>
-              <Text textAlign="center" height={24}>
-                {convertSliderValue(sliderValue)}
-              </Text>
+              <Text textAlign="center">{convertSliderValue(sliderValue)}</Text>
             </VStack>
-          </HStack>
+          </VStack>
+
+          <Box>
+            <VStack space="md">
+              <FormControl
+                size="md"
+                isDisabled={false}
+                isInvalid={false}
+                isReadOnly={false}
+                isRequired={true}
+                justifyContent="center"
+              >
+                <FormControlLabel>
+                  <FormControlLabelText>물/원두</FormControlLabelText>
+                </FormControlLabel>
+              </FormControl>
+              <HStack alignItems="center" gap={"$3"}>
+                <Input size="md" flex={1}>
+                  <InputField
+                    type="text"
+                    placeholder="물(g)"
+                    value={inputMemo}
+                    onChangeText={setInputMemo}
+                  />
+                </Input>
+
+                <Text>/</Text>
+
+                <Input size="md" flex={1}>
+                  <InputField
+                    type="text"
+                    placeholder="원두(g)"
+                    value={inputMemo}
+                    onChangeText={setInputMemo}
+                  />
+                </Input>
+              </HStack>
+            </VStack>
+          </Box>
+
+          <Box>
+            <VStack space="md">
+              <FormControl
+                size="md"
+                isDisabled={false}
+                isInvalid={false}
+                isReadOnly={false}
+                isRequired={true}
+                justifyContent="center"
+              >
+                <FormControlLabel>
+                  <FormControlLabelText>추출기록</FormControlLabelText>
+                </FormControlLabel>
+              </FormControl>
+            </VStack>
+          </Box>
         </Box>
       </ScrollView>
     </SafeAreaView>
