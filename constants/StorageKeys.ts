@@ -1,1 +1,2 @@
 export const MY_DRIP_STORAGE_KEY = "MY_DRIP";
+export const MY_BEANS_LIST_STORAGE_KEY = "MY_BEANS_LIST";

@@ -1,6 +1,8 @@
 import CheckBoxList from "@/components/check/CheckBoxList";
 import ModalDatePicker from "@/components/date/ModalDatePicker";
+import AddBeanModal from "@/components/modal/AddBeanModal";
 import InputSelector from "@/components/selector/InputSelector";
+import useMyDrip from "@/hooks/useMyDrip";
 import { convertSliderValue } from "@/utils/convert";
 import {
   SafeAreaView,
@@ -48,28 +50,31 @@ import { Alert, Pressable } from "react-native";
 
 export default function DripScreen() {
   const [isOpenAddBeanModal, setIsOpenAddBeanModal] = useState<boolean>(false);
-  const [beanName, setBeanName] = useState<string>("");
+
   const [checkList, setCheckList] = useState(["고소한"]);
 
   const [date, setDate] = useState<Date | undefined>(new Date());
 
-  const ref = useRef(null);
-
   const [inputValue, setInputValue] = useState<string>("");
   const [sliderValue, setSliderValue] = useState<number>(30);
+
+  const { getMyBeans } = useMyDrip();
 
   const handleSliderChange = (value: number) => {
     setSliderValue(value);
   };
 
-  const onPressSave = () => {
+  const onPressSave = async () => {
     console.log(date);
     console.log(inputValue);
     console.log(sliderValue);
+
+    const gg = await getMyBeans();
+    console.log(gg);
   };
 
   const saveNewBean = () => {
-    Alert.alert(`원두명: ${beanName}, checkedList: ${checkList.toString()}`);
+    console.log("save");
   };
 
   const getIsSaveButtonDisabled = () => {
@@ -234,76 +239,10 @@ export default function DripScreen() {
         </Box>
       </ScrollView>
 
-      <Modal
+      <AddBeanModal
         isOpen={isOpenAddBeanModal}
-        onClose={() => {
-          setIsOpenAddBeanModal(false);
-        }}
-        finalFocusRef={ref}
-      >
-        <ModalBackdrop />
-        <ModalContent>
-          <ModalHeader>
-            <Heading size="lg">원두 추가</Heading>
-            <ModalCloseButton>
-              <Icon as={CloseIcon} />
-            </ModalCloseButton>
-          </ModalHeader>
-          <ModalBody>
-            {/* <Text>
-              Elevate user interactions with our versatile modals. Seamlessly
-              integrate notifications, forms, and media displays. Make an impact
-              effortlessly.
-            </Text> */}
-            <FormControl
-              size="md"
-              isDisabled={false}
-              isInvalid={false}
-              isReadOnly={false}
-              isRequired={true}
-              justifyContent="center"
-            >
-              <FormControlLabel>
-                <FormControlLabelText>원두명</FormControlLabelText>
-              </FormControlLabel>
-            </FormControl>
-            <Input size="md" flex={1}>
-              <InputField
-                type="text"
-                placeholder="원두명을 입력하세요"
-                value={beanName}
-                onChangeText={setBeanName}
-              />
-            </Input>
-
-            <CheckBoxList checkList={checkList} setCheckList={setCheckList} />
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              variant="outline"
-              size="sm"
-              action="secondary"
-              mr="$3"
-              onPress={() => {
-                setIsOpenAddBeanModal(false);
-              }}
-            >
-              <ButtonText>취소</ButtonText>
-            </Button>
-            <Button
-              size="sm"
-              action="positive"
-              borderWidth="$0"
-              onPress={() => {
-                saveNewBean();
-                setIsOpenAddBeanModal(false);
-              }}
-            >
-              <ButtonText>추가</ButtonText>
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+        setIsOpen={setIsOpenAddBeanModal}
+      />
     </SafeAreaView>
   );
 }

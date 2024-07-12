@@ -1,3 +1,5 @@
+import useMyDrip from "@/hooks/useMyDrip";
+import { Bean } from "@/type/bean";
 import {
   View,
   Text,
@@ -24,15 +26,32 @@ import DropDownPicker from "react-native-dropdown-picker";
 
 export default function InputSelector() {
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
+  const { getMyBeans } = useMyDrip();
+  const [myBeanList, setMyBeanList] = useState<Bean[]>();
 
   useEffect(() => {
-    console.log(selectedValue);
+    if (myBeanList) {
+      const selectedBean = myBeanList?.find(
+        (value) => value.name === selectedValue
+      );
+      console.log(selectedBean);
+    }
   }, [selectedValue]);
+
+  const fetchData = async () => {
+    const data = await getMyBeans();
+    setMyBeanList(data ? JSON.parse(data) : []);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <Select
       selectedValue={selectedValue}
       onValueChange={(value) => setSelectedValue(value)}
+      onOpen={() => fetchData()}
     >
       <SelectTrigger variant="outline" size="lg">
         <SelectInput placeholder="Select option" />
@@ -44,14 +63,15 @@ export default function InputSelector() {
           <SelectDragIndicatorWrapper>
             <SelectDragIndicator />
           </SelectDragIndicatorWrapper>
-          <SelectItem label="UX Research" value="ux" />
-          <SelectItem label="Web Development" value="web" />
-          <SelectItem
-            label="Cross Platform Development Process"
-            value="cross-platform"
-          />
-          <SelectItem label="UI Designing" value="ui" isDisabled={true} />
-          <SelectItem label="Backend Development" value="backend" />
+          {myBeanList?.map((value) => {
+            return (
+              <SelectItem
+                key={value?.name}
+                label={value?.name}
+                value={value?.name}
+              />
+            );
+          })}
         </SelectContent>
       </SelectPortal>
     </Select>
