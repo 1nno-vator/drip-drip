@@ -24,19 +24,26 @@ import { useEffect, useState } from "react";
 import { Alert, Button, StyleSheet, Image } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 
-export default function InputSelector() {
-  const [selectedValue, setSelectedValue] = useState<string | null>(null);
+interface Props {
+  selectedBeanName: string;
+  setSelectedBeanName: (value: string) => void;
+}
+
+export default function BeanSelector({
+  selectedBeanName,
+  setSelectedBeanName,
+}: Props) {
   const { getMyBeans } = useMyDrip();
   const [myBeanList, setMyBeanList] = useState<Bean[]>();
 
   useEffect(() => {
     if (myBeanList) {
       const selectedBean = myBeanList?.find(
-        (value) => value.name === selectedValue
+        (value) => value.name === selectedBeanName
       );
       console.log(selectedBean);
     }
-  }, [selectedValue]);
+  }, [selectedBeanName]);
 
   const fetchData = async () => {
     const data = await getMyBeans();
@@ -49,8 +56,8 @@ export default function InputSelector() {
 
   return (
     <Select
-      selectedValue={selectedValue}
-      onValueChange={(value) => setSelectedValue(value)}
+      selectedValue={selectedBeanName}
+      onValueChange={(value) => setSelectedBeanName(value)}
       onOpen={() => fetchData()}
     >
       <SelectTrigger variant="outline" size="lg">
