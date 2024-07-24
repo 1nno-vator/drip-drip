@@ -1,4 +1,7 @@
-import { Button, HStack, SafeAreaView, Text } from "@gluestack-ui/themed";
+import { Text } from "@/components/ui/text";
+import { SafeAreaView } from "@/components/ui/safe-area-view";
+import { HStack } from "@/components/ui/hstack";
+import { Button } from "@/components/ui/button";
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";

@@ -1,28 +1,30 @@
-import useMyDrip from "@/hooks/useMyDrip";
-import { Bean } from "@/type/bean";
+import { Input, InputField } from "@/components/ui/input";
+import { Button, ButtonText, ButtonIcon } from "@/components/ui/button";
+import { View } from "@/components/ui/view";
+
+import {
+  FormControl,
+  FormControlLabel,
+  FormControlLabelText,
+  FormControlHelper,
+  FormControlHelperText,
+} from "@/components/ui/form-control";
+
+import { Heading } from "@/components/ui/heading";
+import { CloseIcon, Icon } from "@/components/ui/icon";
+
 import {
   Modal,
   ModalBackdrop,
   ModalContent,
   ModalBody,
   ModalFooter,
-  CloseIcon,
   ModalHeader,
-  Heading,
   ModalCloseButton,
-  FormControl,
-  FormControlLabel,
-  FormControlLabelText,
-  FormControlHelper,
-  FormControlHelperText,
-  View,
-  Button,
-  ButtonText,
-  Input,
-  InputField,
-  Icon,
-  ButtonIcon,
-} from "@gluestack-ui/themed";
+} from "@/components/ui/modal";
+
+import useMyDrip from "@/hooks/useMyDrip";
+import { Bean } from "@/type/bean";
 import { useRef, useState } from "react";
 import { Alert } from "react-native";
 
@@ -94,12 +96,12 @@ export default function AddBeanModal({ isOpen, setIsOpen }: Props) {
             isInvalid={false}
             isReadOnly={false}
             isRequired={true}
-            justifyContent="center"
+            className="justify-center"
           >
             <FormControlLabel>
               <FormControlLabelText>원두명</FormControlLabelText>
             </FormControlLabel>
-            <Input size="md" flex={1}>
+            <Input size="md" className="flex-1">
               <InputField
                 type="text"
                 placeholder="원두명을 입력하세요"
@@ -117,14 +119,12 @@ export default function AddBeanModal({ isOpen, setIsOpen }: Props) {
             isInvalid={false}
             isReadOnly={false}
             isRequired={true}
-            justifyContent="center"
-            mt="$3"
-          >
+            className="justify-center mt-3">
             <FormControlLabel>
               <FormControlLabelText>커피 풍미</FormControlLabelText>
             </FormControlLabel>
 
-            <Input size="md" flex={1}>
+            <Input size="md" className="flex-1">
               <InputField
                 type="text"
                 placeholder="커피 풍미"
@@ -140,7 +140,7 @@ export default function AddBeanModal({ isOpen, setIsOpen }: Props) {
           </FormControl>
 
           {flavorList.length > 0 && (
-            <View flexDirection="row" gap="$1" flexWrap="wrap" mt={"$2"}>
+            <View className="flex-row gap-1 flex-wrap mt-2">
               {flavorList.map((flavor, index) => {
                 return (
                   <Button
@@ -150,8 +150,8 @@ export default function AddBeanModal({ isOpen, setIsOpen }: Props) {
                     action="secondary"
                     isDisabled={false}
                     isFocusVisible={false}
-                    alignSelf="center"
                     onPress={() => removeFlavor(flavor)}
+                    className="self-center"
                   >
                     <ButtonText>{flavor}</ButtonText>
                     <ButtonIcon as={CloseIcon} />
@@ -166,20 +166,20 @@ export default function AddBeanModal({ isOpen, setIsOpen }: Props) {
             variant="outline"
             size="sm"
             action="secondary"
-            mr="$3"
             onPress={() => {
               setIsOpen(false);
             }}
+            className="mr-3"
           >
             <ButtonText>취소</ButtonText>
           </Button>
           <Button
             size="sm"
             action="positive"
-            borderWidth="$0"
             onPress={() => {
               saveAction();
             }}
+            className="border-0"
           >
             <ButtonText>추가</ButtonText>
           </Button>

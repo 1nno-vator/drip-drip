@@ -1,25 +1,25 @@
-import useMyDrip from "@/hooks/useMyDrip";
-import { Bean } from "@/type/bean";
+import { ChevronDownIcon, Icon } from "@/components/ui/icon";
+
 import {
-  View,
-  Text,
-  Input,
-  InputField,
-  Modal,
-  Pressable,
   Select,
   SelectTrigger,
   SelectInput,
   SelectIcon,
-  ChevronDownIcon,
-  Icon,
   SelectPortal,
   SelectBackdrop,
   SelectDragIndicatorWrapper,
   SelectContent,
   SelectItem,
   SelectDragIndicator,
-} from "@gluestack-ui/themed";
+} from "@/components/ui/select";
+
+import { Pressable } from "@/components/ui/pressable";
+import { Modal } from "@/components/ui/modal";
+import { Input, InputField } from "@/components/ui/input";
+import { Text } from "@/components/ui/text";
+import { View } from "@/components/ui/view";
+import useMyDrip from "@/hooks/useMyDrip";
+import { Bean } from "@/type/bean";
 import { useEffect, useState } from "react";
 import { Alert, Button, StyleSheet, Image } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -62,7 +62,7 @@ export default function BeanSelector({
     >
       <SelectTrigger variant="outline" size="lg">
         <SelectInput placeholder="Select option" />
-        <Icon as={ChevronDownIcon} mr={"$3"} />
+        <Icon as={ChevronDownIcon} className="mr-3" />
       </SelectTrigger>
       <SelectPortal>
         <SelectBackdrop />

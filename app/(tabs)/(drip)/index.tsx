@@ -1,50 +1,46 @@
-import CheckBoxList from "@/components/check/CheckBoxList";
-import ModalDatePicker from "@/components/date/ModalDatePicker";
-import AddBeanModal from "@/components/modal/AddBeanModal";
-import BeanSelector from "@/components/selector/BeanSelector";
-import useMyDrip from "@/hooks/useMyDrip";
-import { convertSliderValue, roundToDecimalPlace } from "@/utils/convert";
+import { Button, ButtonText, ButtonIcon } from "@/components/ui/button";
+import { VStack } from "@/components/ui/vstack";
+import { Center } from "@/components/ui/center";
+import { Tooltip, TooltipContent } from "@/components/ui/tooltip";
+import { Slider, SliderTrack, SliderFilledTrack, SliderThumb } from "@/components/ui/slider";
+import { HStack } from "@/components/ui/hstack";
+import { Icon, AddIcon, CloseIcon } from "@/components/ui/icon";
+
 import {
-  SafeAreaView,
-  Box,
-  Text,
-  Heading,
-  ScrollView,
-  View,
+  ModalHeader,
+  ModalCloseButton,
+  Modal,
+  ModalBackdrop,
+  ModalContent,
+  ModalBody,
+  ModalFooter,
+} from "@/components/ui/modal";
+
+import { Input, InputField } from "@/components/ui/input";
+
+import {
   FormControl,
   FormControlError,
   FormControlErrorText,
   FormControlErrorIcon,
   FormControlHelper,
   FormControlHelperText,
-  Input,
-  InputField,
   FormControlLabel,
   FormControlLabelText,
-  ModalHeader,
-  Icon,
-  HStack,
-  Slider,
-  SliderTrack,
-  SliderFilledTrack,
-  SliderThumb,
-  Tooltip,
-  Center,
-  TooltipContent,
-  ModalCloseButton,
-  VStack,
-  Button,
-  ButtonText,
-  ButtonIcon,
-  AddIcon,
-  Modal,
-  ModalBackdrop,
-  ModalContent,
-  ModalBody,
-  ModalFooter,
-  CloseIcon,
-  // Pressable,
-} from "@gluestack-ui/themed";
+} from "@/components/ui/form-control";
+
+import { View } from "@/components/ui/view";
+import { ScrollView } from "@/components/ui/scroll-view";
+import { Heading } from "@/components/ui/heading";
+import { Text } from "@/components/ui/text";
+import { Box } from "@/components/ui/box";
+import { SafeAreaView } from "@/components/ui/safe-area-view";
+import CheckBoxList from "@/components/check/CheckBoxList";
+import ModalDatePicker from "@/components/date/ModalDatePicker";
+import AddBeanModal from "@/components/modal/AddBeanModal";
+import BeanSelector from "@/components/selector/BeanSelector";
+import useMyDrip from "@/hooks/useMyDrip";
+import { convertSliderValue, roundToDecimalPlace } from "@/utils/convert";
 import { useEffect, useRef, useState } from "react";
 import { Alert, Pressable } from "react-native";
 
@@ -141,9 +137,9 @@ export default function DripScreen() {
         alwaysBounceVertical={false}
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 80 }}
       >
-        <HStack space="md" justifyContent="space-between" alignItems="center">
+        <HStack space="md" className="justify-between items-center">
           <HStack>
-            <Heading paddingVertical={"$3"}>나의 드립</Heading>
+            <Heading className="py-3">나의 드립</Heading>
             <ModalDatePicker date={date} setDate={setDate} showTimePicker />
           </HStack>
 
@@ -153,15 +149,15 @@ export default function DripScreen() {
             action={getIsSaveButtonDisabled() ? "secondary" : "primary"}
             isDisabled={getIsSaveButtonDisabled()}
             isFocusVisible={false}
-            bg="transparent"
             onPress={onPressSave}
+            className="bg-transparent"
           >
             <ButtonText>저장</ButtonText>
             <ButtonIcon as={AddIcon} />
           </Button>
         </HStack>
 
-        <Box w="$full" mt={"$5"} gap={"$8"}>
+        <Box className="w-full mt-5 gap-8">
           <Box>
             <VStack space="md">
               <FormControl
@@ -170,7 +166,7 @@ export default function DripScreen() {
                 isInvalid={false}
                 isReadOnly={false}
                 isRequired={true}
-                justifyContent="center"
+                className="justify-center"
               >
                 <FormControlLabel>
                   <FormControlLabelText>원두 종류</FormControlLabelText>
@@ -181,13 +177,13 @@ export default function DripScreen() {
                   setSelectedBeanName={setSelectedBeanName}
                 />
                 <Button
-                  mt={"$2"}
                   size="md"
                   variant="solid"
                   action="positive"
                   isDisabled={false}
                   isFocusVisible={false}
                   onPress={() => setIsOpenAddBeanModal((prev) => !prev)}
+                  className="mt-2"
                 >
                   <ButtonText>원두 추가</ButtonText>
                   <ButtonIcon as={AddIcon} />
@@ -203,7 +199,7 @@ export default function DripScreen() {
               isInvalid={false}
               isReadOnly={false}
               isRequired={true}
-              justifyContent="center"
+              className="justify-center"
             >
               <FormControlLabel>
                 <FormControlLabelText>원두 굵기</FormControlLabelText>
@@ -225,7 +221,7 @@ export default function DripScreen() {
                   </SliderTrack>
                   <SliderThumb />
                 </Slider>
-                <Text textAlign="center">
+                <Text className="text-center">
                   {convertSliderValue(sliderValue)}
                 </Text>
               </VStack>
@@ -242,14 +238,14 @@ export default function DripScreen() {
               }
               isReadOnly={false}
               isRequired={true}
-              justifyContent="center"
+              className="justify-center"
             >
               <FormControlLabel>
                 <FormControlLabelText>원두/물</FormControlLabelText>
               </FormControlLabel>
 
-              <HStack alignItems="center" gap={"$3"}>
-                <Input size="md" flex={1}>
+              <HStack className="items-center gap-3">
+                <Input size="md" className="flex-1">
                   <InputField
                     type="text"
                     placeholder="원두(g)"
@@ -260,7 +256,7 @@ export default function DripScreen() {
 
                 <Text>/</Text>
 
-                <Input size="md" flex={1}>
+                <Input size="md" className="flex-1">
                   <InputField
                     type="text"
                     placeholder="물(g)"
@@ -289,22 +285,22 @@ export default function DripScreen() {
                 isInvalid={false}
                 isReadOnly={false}
                 isRequired={false}
-                justifyContent="center"
+                className="justify-center"
               >
                 <FormControlLabel>
                   <FormControlLabelText>추출기록</FormControlLabelText>
                 </FormControlLabel>
 
-                <Box paddingVertical={"$3"}>
+                <Box className="py-3">
                   {inputs.map((input) => (
-                    <HStack gap={"$2"}>
-                      <FormControlLabel minWidth={"$3"}>
+                    <HStack className="gap-2">
+                      <FormControlLabel className="min-w-3">
                         <FormControlLabelText>
                           {input.label}
                         </FormControlLabelText>
                       </FormControlLabel>
 
-                      <Input size="md" flex={1} key={`${input.id}_field`}>
+                      <Input size="md" key={`${input.id}_field`} className="flex-1">
                         <InputField
                           key={`${input.id}_${input.type}`}
                           type="text"
@@ -329,7 +325,6 @@ export default function DripScreen() {
           </Box>
         </Box>
       </ScrollView>
-
       <AddBeanModal
         isOpen={isOpenAddBeanModal}
         setIsOpen={setIsOpenAddBeanModal}

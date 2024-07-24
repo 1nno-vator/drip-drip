@@ -3,13 +3,15 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
+import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
+import "@/global.css";
+
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
 
-import { GluestackUIProvider } from "@gluestack-ui/themed";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { config } from "@gluestack-ui/config";
 
@@ -33,7 +35,7 @@ export default function RootLayout() {
   }
 
   return (
-    <GluestackUIProvider config={config}>
+    <GluestackUIProvider mode="light">
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

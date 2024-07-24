@@ -1,11 +1,7 @@
+import { SafeAreaView } from "@/components/ui/safe-area-view";
+import { View } from "@/components/ui/view";
+
 import {
-  Text,
-  Button,
-  ButtonText,
-  Center,
-  CloseIcon,
-  Heading,
-  Icon,
   Modal,
   ModalBackdrop,
   ModalBody,
@@ -13,9 +9,13 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  View,
-  SafeAreaView,
-} from "@gluestack-ui/themed";
+} from "@/components/ui/modal";
+
+import { Heading } from "@/components/ui/heading";
+import { CloseIcon, Icon } from "@/components/ui/icon";
+import { Center } from "@/components/ui/center";
+import { Button, ButtonText } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
 import { CalendarList, LocaleConfig } from "react-native-calendars";
 import { useRef, useState } from "react";
 

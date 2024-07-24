@@ -1,12 +1,6 @@
-import {
-  CheckIcon,
-  Checkbox,
-  CheckboxIcon,
-  CheckboxIndicator,
-  CheckboxLabel,
-  CheckboxGroup,
-  HStack,
-} from "@gluestack-ui/themed";
+import { HStack } from "@/components/ui/hstack";
+import { Checkbox, CheckboxIcon, CheckboxIndicator, CheckboxLabel, CheckboxGroup } from "@/components/ui/checkbox";
+import { CheckIcon } from "@/components/ui/icon";
 import { useState } from "react";
 
 interface Props {
@@ -20,7 +14,7 @@ interface CheckBox {
 
 function WrappedCheckBox({ value }: CheckBox) {
   return (
-    <Checkbox aria-label={value} gap="$1" value={value}>
+    <Checkbox aria-label={value} value={value} className="gap-1">
       <CheckboxIndicator>
         <CheckboxIcon as={CheckIcon} />
       </CheckboxIndicator>
@@ -37,9 +31,9 @@ export default function CheckBoxList({ checkList, setCheckList }: Props) {
       onChange={(keys) => {
         setCheckList(keys);
       }}
-      mt={"$3"}
+      className="mt-3"
     >
-      <HStack space="sm" flexWrap="wrap">
+      <HStack space="sm" className="flex-wrap">
         <WrappedCheckBox value="고소한" />
 
         <WrappedCheckBox value="산미있는" />

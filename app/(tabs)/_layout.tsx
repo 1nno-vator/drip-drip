@@ -27,7 +27,6 @@ export default function TabLayout() {
           ),
         }}
       />
-
       <Tabs.Screen
         name="(drip)"
         options={{
@@ -40,7 +39,6 @@ export default function TabLayout() {
           ),
         }}
       />
-
       <Tabs.Screen
         name="(mypage)"
         options={{
