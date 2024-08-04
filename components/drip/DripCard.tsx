@@ -10,41 +10,44 @@ import { useState } from "react";
 
 interface Props {
   index: number;
+  water: number;
+  time: number;
+  onChangeHandler: (index: number, key: string, value: string) => void;
+  removeCardAction: (index: number) => void;
 }
 
-export default function DripCard({ index }: Props) {
-  const [water, setWater] = useState<number>(0);
-  const [time, setTime] = useState<number>(0);
-
-  const onChangeWater = (value: string) => {
-    setWater(Number(value));
-  };
-
-  const onChangeTime = (value: string) => {
-    setTime(Number(value));
-  };
-
+export default function DripCard({
+  index,
+  water,
+  time,
+  onChangeHandler,
+  removeCardAction,
+}: Props) {
   const increaseWater = () => {
     if (water >= 0) {
-      setWater(water + 1);
+      //   setWater(water + 1);
+      onChangeHandler(index, "water", String(water + 1));
     }
   };
 
   const decreaseWater = () => {
     if (water > 0) {
-      setWater(water - 1);
+      //   setWater(water - 1);
+      onChangeHandler(index, "water", String(water - 1));
     }
   };
 
   const increaseTime = () => {
     if (time >= 0) {
-      setTime(time + 1);
+      //   setTime(time + 1);
+      onChangeHandler(index, "time", String(time + 1));
     }
   };
 
   const decreaseTime = () => {
     if (time > 0) {
-      setTime(time - 1);
+      //   setTime(time - 1);
+      onChangeHandler(index, "time", String(time - 1));
     }
   };
 
@@ -56,9 +59,9 @@ export default function DripCard({ index }: Props) {
         </View>
 
         {index > 0 && (
-          <View>
+          <Pressable onPress={() => removeCardAction(index)}>
             <Text className="text-red-900 text-sm">Remove</Text>
-          </View>
+          </Pressable>
         )}
       </View>
 
@@ -76,7 +79,7 @@ export default function DripCard({ index }: Props) {
             >
               <InputField
                 value={water > 0 ? String(water) : undefined}
-                onChangeText={onChangeWater}
+                onChangeText={(value) => onChangeHandler(index, "water", value)}
                 placeholder="0"
               />
             </Input>
@@ -112,7 +115,7 @@ export default function DripCard({ index }: Props) {
             >
               <InputField
                 value={time > 0 ? String(time) : undefined}
-                onChangeText={onChangeTime}
+                onChangeText={(value) => onChangeHandler(index, "time", value)}
                 placeholder="0"
               />
             </Input>

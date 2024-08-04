@@ -49,9 +49,9 @@ export default function DripScreen() {
   // 입력 필드 상태를 관리하는 상태 변수 (빈 배열로 초기화)
   const [inputs, setInputs] = useState<any>([
     {
-      id: Date.now(),
+      index: 0,
       water: 0,
-      waitSecUntilNextPour: 0,
+      time: 0,
     },
   ]);
 
@@ -99,50 +99,50 @@ export default function DripScreen() {
     return `${beanRelatedWaterRatio}:${waterRelatedBeanRatio}`;
   };
 
-  // 입력 필드 추가 함수
-  const addInputField = () => {
-    setInputs([...inputs, { id: Date.now(), value: "" }]);
+  const handleAddField = () => {
+    setInputs([...inputs, { index: inputs.length, water: 0, time: 0 }]);
   };
 
-  // 입력 필드 값 변경 핸들러
-  const handleInputChange = (id, newValue) => {
+  const handleRemoveField = (index) => {
+    setInputs(inputs.filter((field) => field.index !== index));
+  };
+
+  const handleInputChange = (index, key, value) => {
     setInputs(
-      inputs.map((input) =>
-        input.id === id ? { ...input, value: newValue } : input
+      inputs.map((field) =>
+        field.index === index ? { ...field, [key]: parseInt(value) } : field
       )
     );
   };
 
-  // 모든 입력 필드의 값 출력
   const handleSubmit = () => {
     console.log(inputs);
   };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <HStack space="md" className="justify-between items-center px-4">
+        <HStack>
+          <Heading className="py-3">나의 드립</Heading>
+          <ModalDatePicker date={date} setDate={setDate} showTimePicker />
+        </HStack>
+
+        <Button
+          size="sm"
+          variant="link"
+          action={getIsSaveButtonDisabled() ? "secondary" : "primary"}
+          isDisabled={getIsSaveButtonDisabled()}
+          isFocusVisible={false}
+          onPress={onPressSave}
+          className="bg-transparent"
+        >
+          <ButtonText>저장</ButtonText>
+          <ButtonIcon as={AddIcon} />
+        </Button>
+      </HStack>
       <ScrollView
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 80 }}
       >
-        <HStack space="md" className="justify-between items-center">
-          <HStack>
-            <Heading className="py-3">나의 드립</Heading>
-            <ModalDatePicker date={date} setDate={setDate} showTimePicker />
-          </HStack>
-
-          <Button
-            size="sm"
-            variant="link"
-            action={getIsSaveButtonDisabled() ? "secondary" : "primary"}
-            isDisabled={getIsSaveButtonDisabled()}
-            isFocusVisible={false}
-            onPress={onPressSave}
-            className="bg-transparent"
-          >
-            <ButtonText>저장</ButtonText>
-            <ButtonIcon as={AddIcon} />
-          </Button>
-        </HStack>
-
         <Box className="w-full mt-5 gap-8">
           <Box>
             <VStack space="md">
@@ -293,41 +293,23 @@ export default function DripScreen() {
                   <FormControlLabelText>추출기록</FormControlLabelText>
                 </FormControlLabel>
 
-                <Box className="py-3">
+                <Box className="py-3 gap-1">
                   {inputs.map((input, idx) => (
-                    <DripCard index={idx} />
+                    <DripCard
+                      index={input.index}
+                      water={input.water}
+                      time={input.time}
+                      onChangeHandler={handleInputChange}
+                      removeCardAction={handleRemoveField}
+                    />
                   ))}
-                  {/* <HStack className="gap-2">
-                    <FormControlLabel className="min-w-3">
-                      <FormControlLabelText>
-                        {input.label}
-                      </FormControlLabelText>
-                    </FormControlLabel>
 
-                    <Input
-                      size="md"
-                      key={`${input.id}_field`}
-                      className="flex-1"
-                    >
-                      <InputField
-                        key={`${input.id}_${input.type}`}
-                        type="text"
-                        placeholder={`${input.label}를 입력해주세요`}
-                        value={input.value}
-                        onChangeText={(text) =>
-                          handleInputChange(input.id, text)
-                        }
-                      />
-                    </Input>
-
-                  </HStack> */}
-
-                  {/* <Button onPress={addInputField}>
+                  <Button onPress={handleAddField}>
                     <ButtonText>추가</ButtonText>
                   </Button>
                   <Button onPress={handleSubmit}>
                     <ButtonText>조회</ButtonText>
-                  </Button> */}
+                  </Button>
                 </Box>
               </FormControl>
             </VStack>
