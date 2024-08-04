@@ -1,48 +1,37 @@
 import { Button, ButtonText, ButtonIcon } from "@/components/ui/button";
 import { VStack } from "@/components/ui/vstack";
-import { Center } from "@/components/ui/center";
-import { Tooltip, TooltipContent } from "@/components/ui/tooltip";
-import { Slider, SliderTrack, SliderFilledTrack, SliderThumb } from "@/components/ui/slider";
-import { HStack } from "@/components/ui/hstack";
-import { Icon, AddIcon, CloseIcon } from "@/components/ui/icon";
-
 import {
-  ModalHeader,
-  ModalCloseButton,
-  Modal,
-  ModalBackdrop,
-  ModalContent,
-  ModalBody,
-  ModalFooter,
-} from "@/components/ui/modal";
+  Slider,
+  SliderTrack,
+  SliderFilledTrack,
+  SliderThumb,
+} from "@/components/ui/slider";
+import { HStack } from "@/components/ui/hstack";
+import { AddIcon } from "@/components/ui/icon";
 
 import { Input, InputField } from "@/components/ui/input";
 
 import {
   FormControl,
-  FormControlError,
-  FormControlErrorText,
-  FormControlErrorIcon,
   FormControlHelper,
   FormControlHelperText,
   FormControlLabel,
   FormControlLabelText,
 } from "@/components/ui/form-control";
 
-import { View } from "@/components/ui/view";
-import { ScrollView } from "@/components/ui/scroll-view";
 import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";
 import { Box } from "@/components/ui/box";
 import { SafeAreaView } from "@/components/ui/safe-area-view";
-import CheckBoxList from "@/components/check/CheckBoxList";
 import ModalDatePicker from "@/components/date/ModalDatePicker";
 import AddBeanModal from "@/components/modal/AddBeanModal";
 import BeanSelector from "@/components/selector/BeanSelector";
 import useMyDrip from "@/hooks/useMyDrip";
 import { convertSliderValue, roundToDecimalPlace } from "@/utils/convert";
-import { useEffect, useRef, useState } from "react";
-import { Alert, Pressable } from "react-native";
+import { useState } from "react";
+import DripCard from "@/components/drip/DripCard";
+import { ScrollView } from "@/components/ui/scroll-view";
+import { Switch } from "@/components/ui/switch";
 
 export default function DripScreen() {
   const [isOpenAddBeanModal, setIsOpenAddBeanModal] = useState<boolean>(false);
@@ -55,15 +44,14 @@ export default function DripScreen() {
 
   const [sliderValue, setSliderValue] = useState<number>(30);
 
-  const [inputWaterAt, setInputWaterAt] = useState<string>("");
+  const [isRinsing, setIsRinsing] = useState<boolean>(false);
 
   // 입력 필드 상태를 관리하는 상태 변수 (빈 배열로 초기화)
-  const [inputs, setInputs] = useState([
+  const [inputs, setInputs] = useState<any>([
     {
       id: Date.now(),
-      type: "WATER_TEMPERATURE",
-      label: "물 온도(°c)",
-      value: "",
+      water: 0,
+      waitSecUntilNextPour: 0,
     },
   ]);
 
@@ -133,8 +121,6 @@ export default function DripScreen() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView
-        nestedScrollEnabled={true}
-        alwaysBounceVertical={false}
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 80 }}
       >
         <HStack space="md" className="justify-between items-center">
@@ -278,6 +264,22 @@ export default function DripScreen() {
           </Box>
 
           <Box>
+            <FormControl
+              size="md"
+              isDisabled={false}
+              isInvalid={false}
+              isReadOnly={false}
+              isRequired={false}
+              className="justify-center"
+            >
+              <FormControlLabel>
+                <FormControlLabelText>린싱</FormControlLabelText>
+              </FormControlLabel>
+              <Switch value={isRinsing} onToggle={setIsRinsing} />
+            </FormControl>
+          </Box>
+
+          <Box>
             <VStack space="md">
               <FormControl
                 size="md"
@@ -292,33 +294,40 @@ export default function DripScreen() {
                 </FormControlLabel>
 
                 <Box className="py-3">
-                  {inputs.map((input) => (
-                    <HStack className="gap-2">
-                      <FormControlLabel className="min-w-3">
-                        <FormControlLabelText>
-                          {input.label}
-                        </FormControlLabelText>
-                      </FormControlLabel>
-
-                      <Input size="md" key={`${input.id}_field`} className="flex-1">
-                        <InputField
-                          key={`${input.id}_${input.type}`}
-                          type="text"
-                          placeholder={`${input.label}를 입력해주세요`}
-                          value={input.value}
-                          onChangeText={(text) =>
-                            handleInputChange(input.id, text)
-                          }
-                        />
-                      </Input>
-                    </HStack>
+                  {inputs.map((input, idx) => (
+                    <DripCard index={idx} />
                   ))}
-                  <Button onPress={addInputField}>
+                  {/* <HStack className="gap-2">
+                    <FormControlLabel className="min-w-3">
+                      <FormControlLabelText>
+                        {input.label}
+                      </FormControlLabelText>
+                    </FormControlLabel>
+
+                    <Input
+                      size="md"
+                      key={`${input.id}_field`}
+                      className="flex-1"
+                    >
+                      <InputField
+                        key={`${input.id}_${input.type}`}
+                        type="text"
+                        placeholder={`${input.label}를 입력해주세요`}
+                        value={input.value}
+                        onChangeText={(text) =>
+                          handleInputChange(input.id, text)
+                        }
+                      />
+                    </Input>
+
+                  </HStack> */}
+
+                  {/* <Button onPress={addInputField}>
                     <ButtonText>추가</ButtonText>
                   </Button>
                   <Button onPress={handleSubmit}>
                     <ButtonText>조회</ButtonText>
-                  </Button>
+                  </Button> */}
                 </Box>
               </FormControl>
             </VStack>
