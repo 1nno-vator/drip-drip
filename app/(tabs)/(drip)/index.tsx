@@ -32,6 +32,7 @@ import { useState } from "react";
 import DripCard from "@/components/drip/DripCard";
 import { ScrollView } from "@/components/ui/scroll-view";
 import { Switch } from "@/components/ui/switch";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 export default function DripScreen() {
   const [isOpenAddBeanModal, setIsOpenAddBeanModal] = useState<boolean>(false);
@@ -140,7 +141,7 @@ export default function DripScreen() {
           <ButtonIcon as={AddIcon} />
         </Button>
       </HStack>
-      <ScrollView
+      <KeyboardAwareScrollView
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 80 }}
       >
         <Box className="w-full mt-5 gap-8">
@@ -296,6 +297,7 @@ export default function DripScreen() {
                 <Box className="py-3 gap-1">
                   {inputs.map((input, idx) => (
                     <DripCard
+                      key={idx}
                       index={input.index}
                       water={input.water}
                       time={input.time}
@@ -315,7 +317,7 @@ export default function DripScreen() {
             </VStack>
           </Box>
         </Box>
-      </ScrollView>
+      </KeyboardAwareScrollView>
       <AddBeanModal
         isOpen={isOpenAddBeanModal}
         setIsOpen={setIsOpenAddBeanModal}
