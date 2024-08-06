@@ -5,6 +5,7 @@ import {
   Input,
   Pressable,
   CloseIcon,
+  Switch,
 } from "@gluestack-ui/themed";
 import { useState } from "react";
 
@@ -12,7 +13,12 @@ interface Props {
   index: number;
   water: number;
   time: number;
-  onChangeHandler: (index: number, key: string, value: string) => void;
+  isLast: boolean;
+  onChangeHandler: (
+    index: number,
+    key: string,
+    value: string | boolean
+  ) => void;
   removeCardAction: (index: number) => void;
 }
 
@@ -20,42 +26,45 @@ export default function DripCard({
   index,
   water,
   time,
+  isLast,
   onChangeHandler,
   removeCardAction,
 }: Props) {
   const increaseWater = () => {
     if (water >= 0) {
-      //   setWater(water + 1);
       onChangeHandler(index, "water", String(water + 1));
     }
   };
 
   const decreaseWater = () => {
     if (water > 0) {
-      //   setWater(water - 1);
       onChangeHandler(index, "water", String(water - 1));
     }
   };
 
   const increaseTime = () => {
     if (time >= 0) {
-      //   setTime(time + 1);
       onChangeHandler(index, "time", String(time + 1));
     }
   };
 
   const decreaseTime = () => {
     if (time > 0) {
-      //   setTime(time - 1);
       onChangeHandler(index, "time", String(time - 1));
     }
   };
 
+  const toggleIsLast = () => {
+    onChangeHandler(index, "isLast", !isLast);
+  };
+
   return (
-    <View className="px-3 py-3 border-teal-900 border-[1px] rounded-lg">
+    <View className="px-3 py-3 border-teal-900 rounded-lg border">
       <View className="flex-row justify-between items-center">
-        <View className="rounded-full bg-gray-300 justify-center items-center w-[20px] h-[20px]">
-          <Text>{index + 1}</Text>
+        <View className="rounded-full bg-lightBlue-500 justify-center items-center w-5 h-5">
+          <Text style={{ color: "white", fontWeight: "bold" }}>
+            {index + 1}
+          </Text>
         </View>
 
         {index > 0 && (
@@ -102,41 +111,52 @@ export default function DripCard({
           </View>
         </View>
 
-        <View className="flex-row justify-between">
-          <View className="flex-row gap-1 items-center">
-            <Text className="text-lg">다음 푸어까지 </Text>
-            <Input
-              className="text-lg"
-              variant="underlined"
-              size="md"
-              isDisabled={false}
-              isInvalid={false}
-              isReadOnly={false}
-            >
-              <InputField
-                value={time > 0 ? String(time) : undefined}
-                onChangeText={(value) => onChangeHandler(index, "time", value)}
-                placeholder="0"
-              />
-            </Input>
-            <Text className="text-lg">초 기다리기</Text>
-          </View>
+        {!isLast && (
+          <View className="flex-row justify-between">
+            <View className="flex-row gap-1 items-center">
+              <Text className="text-lg">다음 푸어까지 </Text>
+              <Input
+                className="text-lg"
+                variant="underlined"
+                size="md"
+                isDisabled={false}
+                isInvalid={false}
+                isReadOnly={false}
+              >
+                <InputField
+                  value={time > 0 ? String(time) : undefined}
+                  onChangeText={(value) =>
+                    onChangeHandler(index, "time", value)
+                  }
+                  placeholder="0"
+                />
+              </Input>
+              <Text className="text-lg">초 기다리기</Text>
+            </View>
 
-          <View className="flex-row gap-2">
-            <Pressable
-              className="w-[20px] h-[20px] justify-center items-center rounded-full bg-gray-200"
-              onPress={increaseTime}
-            >
-              <Text>+</Text>
-            </Pressable>
-            <Pressable
-              className="w-[20px] h-[20px] justify-center items-center rounded-full bg-gray-200"
-              onPress={decreaseTime}
-            >
-              <Text>-</Text>
-            </Pressable>
+            <View className="flex-row gap-2">
+              <Pressable
+                className="w-[20px] h-[20px] justify-center items-center rounded-full bg-gray-200"
+                onPress={increaseTime}
+              >
+                <Text>+</Text>
+              </Pressable>
+              <Pressable
+                className="w-[20px] h-[20px] justify-center items-center rounded-full bg-gray-200"
+                onPress={decreaseTime}
+              >
+                <Text>-</Text>
+              </Pressable>
+            </View>
           </View>
-        </View>
+        )}
+
+        {index !== 0 && (
+          <View className="flex-row justify-end items-center gap-2">
+            <Text className={"text-neutral-400"}>마지막 푸어링</Text>
+            <Switch value={isLast} onToggle={toggleIsLast} />
+          </View>
+        )}
       </View>
     </View>
   );

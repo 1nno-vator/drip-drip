@@ -30,9 +30,9 @@ import useMyDrip from "@/hooks/useMyDrip";
 import { convertSliderValue, roundToDecimalPlace } from "@/utils/convert";
 import { useState } from "react";
 import DripCard from "@/components/drip/DripCard";
-import { ScrollView } from "@/components/ui/scroll-view";
 import { Switch } from "@/components/ui/switch";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
+import { IDripCard } from "@/type/drip";
 
 export default function DripScreen() {
   const [isOpenAddBeanModal, setIsOpenAddBeanModal] = useState<boolean>(false);
@@ -48,11 +48,12 @@ export default function DripScreen() {
   const [isRinsing, setIsRinsing] = useState<boolean>(false);
 
   // 입력 필드 상태를 관리하는 상태 변수 (빈 배열로 초기화)
-  const [inputs, setInputs] = useState<any>([
+  const [inputs, setInputs] = useState<IDripCard[]>([
     {
       index: 0,
       water: 0,
       time: 0,
+      isLast: false,
     },
   ]);
 
@@ -101,19 +102,35 @@ export default function DripScreen() {
   };
 
   const handleAddField = () => {
-    setInputs([...inputs, { index: inputs.length, water: 0, time: 0 }]);
+    setInputs([
+      ...inputs,
+      { index: inputs.length, water: 0, time: 0, isLast: false },
+    ]);
   };
 
-  const handleRemoveField = (index) => {
+  const handleRemoveField = (index: number) => {
     setInputs(inputs.filter((field) => field.index !== index));
   };
 
-  const handleInputChange = (index, key, value) => {
-    setInputs(
-      inputs.map((field) =>
-        field.index === index ? { ...field, [key]: parseInt(value) } : field
-      )
-    );
+  const handleInputChange = (
+    index: number,
+    key: string,
+    value: string | boolean
+  ) => {
+    if (typeof value === "string") {
+      setInputs(
+        inputs.map((field) =>
+          field.index === index ? { ...field, [key]: parseInt(value) } : field
+        )
+      );
+    }
+    if (typeof value === "boolean") {
+      setInputs(
+        inputs.map((field) =>
+          field.index === index ? { ...field, [key]: value } : field
+        )
+      );
+    }
   };
 
   const handleSubmit = () => {
@@ -199,7 +216,7 @@ export default function DripScreen() {
                   value={sliderValue}
                   maxValue={50}
                   minValue={10}
-                  onChange={(v) => {
+                  onChange={(v: number) => {
                     handleSliderChange(Math.floor(v));
                   }}
                 >
@@ -301,6 +318,7 @@ export default function DripScreen() {
                       index={input.index}
                       water={input.water}
                       time={input.time}
+                      isLast={input.isLast}
                       onChangeHandler={handleInputChange}
                       removeCardAction={handleRemoveField}
                     />

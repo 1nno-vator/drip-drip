@@ -4,7 +4,6 @@ import {
   Select,
   SelectTrigger,
   SelectInput,
-  SelectIcon,
   SelectPortal,
   SelectBackdrop,
   SelectDragIndicatorWrapper,
@@ -13,16 +12,10 @@ import {
   SelectDragIndicator,
 } from "@/components/ui/select";
 
-import { Pressable } from "@/components/ui/pressable";
-import { Modal } from "@/components/ui/modal";
-import { Input, InputField } from "@/components/ui/input";
-import { Text } from "@/components/ui/text";
-import { View } from "@/components/ui/view";
 import useMyDrip from "@/hooks/useMyDrip";
-import { Bean } from "@/type/bean";
+import { IBean } from "@/type/bean";
 import { useEffect, useState } from "react";
-import { Alert, Button, StyleSheet, Image } from "react-native";
-import DropDownPicker from "react-native-dropdown-picker";
+import { StyleSheet } from "react-native";
 
 interface Props {
   selectedBeanName: string;
@@ -34,7 +27,7 @@ export default function BeanSelector({
   setSelectedBeanName,
 }: Props) {
   const { getMyBeans } = useMyDrip();
-  const [myBeanList, setMyBeanList] = useState<Bean[]>();
+  const [myBeanList, setMyBeanList] = useState<IBean[]>();
 
   useEffect(() => {
     if (myBeanList) {
@@ -54,10 +47,19 @@ export default function BeanSelector({
     fetchData();
   }, []);
 
+  if (!myBeanList || myBeanList?.length === 0) {
+    return null;
+  }
+
   return (
     <Select
       selectedValue={selectedBeanName}
-      onValueChange={(value) => setSelectedBeanName(value)}
+      onValueChange={(value) => {
+        console.log(value);
+        if (value !== "No beans found") {
+          setSelectedBeanName(value);
+        }
+      }}
       onOpen={() => fetchData()}
     >
       <SelectTrigger variant="outline" size="lg">
@@ -66,19 +68,23 @@ export default function BeanSelector({
       </SelectTrigger>
       <SelectPortal>
         <SelectBackdrop />
-        <SelectContent>
+        <SelectContent className="py-4">
           <SelectDragIndicatorWrapper>
             <SelectDragIndicator />
           </SelectDragIndicatorWrapper>
-          {myBeanList?.map((value) => {
-            return (
-              <SelectItem
-                key={value?.name}
-                label={value?.name}
-                value={value?.name}
-              />
-            );
-          })}
+          {myBeanList && myBeanList?.length > 0 ? (
+            myBeanList?.map((value) => {
+              return (
+                <SelectItem
+                  key={value?.name}
+                  label={value?.name}
+                  value={value?.name}
+                />
+              );
+            })
+          ) : (
+            <SelectItem label="No beans found" value="No beans found" />
+          )}
         </SelectContent>
       </SelectPortal>
     </Select>

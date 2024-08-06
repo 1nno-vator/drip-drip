@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/modal";
 
 import useMyDrip from "@/hooks/useMyDrip";
-import { Bean } from "@/type/bean";
+import { IBean } from "@/type/bean";
 import { useRef, useState } from "react";
 import { Alert } from "react-native";
 
@@ -62,7 +62,7 @@ export default function AddBeanModal({ isOpen, setIsOpen }: Props) {
       flavorList: flavorList,
     };
 
-    const oldBeansNameList = oldBeans.map((value: Bean) => value.name);
+    const oldBeansNameList = oldBeans.map((value: IBean) => value.name);
     if (oldBeansNameList.find((name: string) => name === beanName)) {
       return Alert.alert("이미 등록된 원두에요.");
     }
@@ -111,15 +111,14 @@ export default function AddBeanModal({ isOpen, setIsOpen }: Props) {
             </Input>
           </FormControl>
 
-          {/* <CheckBoxList checkList={checkList} setCheckList={setCheckList} /> */}
-
           <FormControl
             size="md"
             isDisabled={false}
             isInvalid={false}
             isReadOnly={false}
             isRequired={true}
-            className="justify-center mt-3">
+            className="justify-center mt-3"
+          >
             <FormControlLabel>
               <FormControlLabelText>커피 풍미</FormControlLabelText>
             </FormControlLabel>
